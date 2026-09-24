@@ -209,22 +209,6 @@ The main endpoint accepts a cybersecurity research query.
 }
 ```
 
-### Response
-
-The endpoint returns a structured analysis containing:
-
-```text
-query
-executive_summary
-threat_actors
-malware_or_tools
-ttps
-iocs
-recommendations
-sources
-confidence_notes
-```
-
 ## MITRE ATT&CK Integration
 
 The tool uses the MITRE ATT&CK framework to map observed attacker behavior to standardized techniques.
