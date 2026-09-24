@@ -1,66 +1,138 @@
 # Agentic Threat Intelligence Tool
 
-LangChain + OpenAI agent that autonomously gathers open-source threat intel
-and maps observed behavior to MITRE ATT&CK techniques.
+An AI-powered cybersecurity tool that researches open-source threat intelligence and maps observed attacker behavior to the **MITRE ATT&CK** framework.
+
+## What It Does
+
+This tool lets users enter a **threat intelligence topic** and automatically researches it using open-source security information.
+
+It analyzes the findings and maps observed attacker behavior to MITRE ATT&CK techniques, providing supporting evidence, confidence scores, sources, and defensive recommendations.
+
+## Inputs
+
+* `query` - The threat intelligence topic you want the agent to research.
+* `sources` - Optional sources to use. Set to `null` to let the agent find relevant sources.
+* `max_sources` - Maximum number of sources the agent should research.
+
+## Analysis Output
+
+The final analysis includes:
+
+* **Executive Summary** - Overview of key findings
+* **Threat Actors** - Identified threat groups
+* **Malware & Tools** - Malware or software associated with the activity
+* **MITRE ATT&CK TTPs** - Techniques mapped to attacker behavior
+* **Indicators of Compromise (IOCs)** - Relevant technical indicators
+* **Recommendations** - Defensive actions based on the findings
+* **Sources** - Sources used during research
+* **Confidence Notes** - Context about the reliability of the findings
+
+Each MITRE ATT&CK technique includes supporting evidence and a confidence score.
+
+## How It Works
+
+```text
+Threat Intelligence Topic
+        ↓
+AI Research Agent
+        ↓
+Open-Source Threat Intelligence
+        ↓
+Evidence Analysis
+        ↓
+MITRE ATT&CK Mapping
+        ↓
+Structured Threat Intelligence Report
+```
+
+## Example Input
+
+```json
+{
+  "query": "recent ransomware targeting healthcare",
+  "sources": null,
+  "max_sources": 3
+}
+```
+
+## Tech Stack
+
+* **Python**
+* **LangChain**
+* **OpenAI API**
+* **FastAPI**
+* **MITRE ATT&CK**
+* **Pydantic**
+
+## Project Structure
+
+```text
+threat-intel-tool/
+├── requirements.txt
+├── .env.example
+├── app/
+│   ├── config.py
+│   ├── models.py
+│   ├── mitre_attack.py
+│   ├── tools.py
+│   ├── agent.py
+│   └── main.py
+├── examples/
+│   └── client_example.py
+└── data/
+```
 
 ## Setup
 
 ```bash
 cd threat-intel-tool
+
 python3 -m venv venv
-source venv/bin/activate          # Windows: venv\Scripts\activate
+source venv/bin/activate
+
 pip install -r requirements.txt
 
 cp .env.example .env
-# then edit .env and set OPENAI_API_KEY and TI_API_KEY
+```
+
+Add your API keys to `.env`:
+
+```env
+OPENAI_API_KEY=your_openai_api_key
+TI_API_KEY=your_threat_intelligence_api_key
 ```
 
 ## Run
+
+Start the FastAPI server:
 
 ```bash
 uvicorn app.main:app --reload --port 8000
 ```
 
-Visit `http://localhost:8000/docs` to try it interactively, or:
+Open **http://localhost:8000/docs** to test the API interactively.
+
+You can also run:
 
 ```bash
-python examples/client_example.py "your topic here"
+python examples/client_example.py "recent ransomware targeting healthcare"
 ```
 
-## Project layout
+## MITRE ATT&CK Integration
 
-```
-threat-intel-tool/
-├── requirements.txt
-├── .env.example
-├── app/
-│   ├── config.py        # .env -> settings object
-│   ├── models.py        # request/response shapes
-│   ├── mitre_attack.py  # ATT&CK download, cache, search
-│   ├── tools.py         # tools the agent can call
-│   ├── agent.py         # research + synthesis pipeline
-│   └── main.py          # FastAPI routes
-├── examples/
-│   └── client_example.py
-└── data/                 # cached ATT&CK bundle lands here
-```
+The tool maps observed attacker behavior to standardized MITRE ATT&CK techniques.
 
-## Known issues & fixes
+Each technique can include:
 
-**`TypeError: Client.__init__() got an unexpected keyword argument 'proxies'`**
-A newer `httpx` than `openai==1.54.4` expects gets installed by default. Fix:
-```bash
-pip install "httpx==0.27.2"
-```
-Then fully restart the server (Ctrl+C, then `uvicorn app.main:app --reload --port 8000` again).
+* Technique ID
+* Technique name
+* Tactic
+* Confidence score
+* Supporting evidence
+* ATT&CK URL when available
 
-**`401 Unauthorized` on `/analyze`**
-`X-API-Key` header doesn't match `TI_API_KEY` in `.env`. Common causes: edited `.env.example` instead of `.env` by mistake, or edited `.env` but didn't restart the server (it only reads `.env` once, at startup — changes don't apply until you stop and re-run `uvicorn`).
+## Disclaimer
 
-**`openai.RateLimitError: ... insufficient_quota`**
-Your OpenAI account has no billing/credits. Add a payment method at platform.openai.com/settings/organization/billing — no code changes needed once credits are added.
+This project is intended for educational and defensive cybersecurity research purposes only.
 
-**`attack_techniques_loaded: 0` from `/health`**
-The ATT&CK STIX bundle download failed or hadn't finished. Check the terminal log right after "Loading MITRE ATT&CK knowledge base..." for the real error, and try restarting the server.
-
-**General rule:** any time you edit `.env` or install a new package, fully stop (`Ctrl+C`) and restart `uvicorn` — neither change takes effect on a server that's already running.
+It uses publicly available threat intelligence and does not perform attacks against systems.
