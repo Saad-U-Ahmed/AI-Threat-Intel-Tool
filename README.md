@@ -4,7 +4,9 @@ An AI-powered cybersecurity tool that researches open-source threat intelligence
 
 ## What It Does
 
-The tool allows users to submit a threat intelligence topic.
+This tool lets users enter a threat intelligence topic and automatically researches it using open-source security information.
+
+It then analyzes the findings and maps observed attacker behavior to MITRE ATT&CK techniques, providing supporting evidence, confidence scores, sources, and defensive recommendations.
 
 Inputs:
 
