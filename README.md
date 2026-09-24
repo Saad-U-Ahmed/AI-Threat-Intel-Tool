@@ -8,7 +8,7 @@ This tool lets users enter a **threat intelligence topic** and automatically res
 
 It analyzes the findings and maps observed attacker behavior to MITRE ATT&CK techniques, providing supporting evidence, confidence scores, sources, and defensive recommendations.
 
-## Inputs
+## Input
 
 * `query` - The threat intelligence topic you want the agent to research.
 * `sources` - Optional sources to use. Set to `null` to let the agent find relevant sources.
@@ -45,13 +45,6 @@ MITRE ATT&CK Mapping
 Structured Threat Intelligence Report
 ```
 
-## Input
-
-```json
-query - The threat intelligence topic you want the agent to research.
-sources - Optional sources to use. Set to null to let the agent find relevant sources.
-max_sources - Maximum number of sources the agent should research.
-```
 
 ## Tech Stack
 
