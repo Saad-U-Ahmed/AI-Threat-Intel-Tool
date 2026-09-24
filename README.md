@@ -45,14 +45,12 @@ MITRE ATT&CK Mapping
 Structured Threat Intelligence Report
 ```
 
-## Example Input
+## Input
 
 ```json
-{
-  "query": "recent ransomware targeting healthcare",
-  "sources": null,
-  "max_sources": 3
-}
+query - The threat intelligence topic you want the agent to research.
+sources - Optional sources to use. Set to null to let the agent find relevant sources.
+max_sources - Maximum number of sources the agent should research.
 ```
 
 ## Tech Stack
